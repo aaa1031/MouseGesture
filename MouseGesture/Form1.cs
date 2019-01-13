@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static MouseGesture.MouseHook;
 
 namespace MouseGesture
 {
@@ -15,6 +16,14 @@ namespace MouseGesture
         public Form1()
         {
             InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            //DesktopDrawクラスのインスタンス化
+            DesktopDraw DDraw = new DesktopDraw();
+            AddEvent(DDraw.Drawline);
+            Start();
         }
     }
 }
