@@ -13,6 +13,7 @@ namespace MouseGesture
 {
     public partial class Form1 : Form
     {
+
         public Form1()
         {
             InitializeComponent();
@@ -22,6 +23,7 @@ namespace MouseGesture
         {
             //DesktopDrawクラスのインスタンス化
             DesktopDraw DDraw = new DesktopDraw();
+            DDraw = new DesktopDraw();
             AddEvent(DDraw.Drawline);
             Start();
         }

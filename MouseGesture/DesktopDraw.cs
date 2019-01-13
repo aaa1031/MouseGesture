@@ -13,13 +13,16 @@ namespace MouseGesture
     class DesktopDraw
     {
         //フィールド
+
+        //クラスのインスタンス化
         Form nForm = new Form();
         PictureBox nPB = new PictureBox();
-        public Bitmap nCanvas;
+        GraphicsPath myPath;
+
         Point OldP;
         Graphics g;
 
-        //右クリック下押しのフラグ
+        //右ボタンdownのフラグ
         bool isRIGHTDOWN = false;
 
         //コンストラクタ
@@ -30,13 +33,10 @@ namespace MouseGesture
             nForm.FormBorderStyle = FormBorderStyle.None;
             nForm.Bounds = Screen.PrimaryScreen.Bounds;
             nForm.TopMost = true;
-            //nCanvas = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
             nForm.Bounds = Screen.PrimaryScreen.Bounds;
 
             //追加ピクチャボックスの初期化
             nPB.Bounds = Screen.PrimaryScreen.Bounds;
-            //追加ピクチャボックスのグラフィクスオブジェクトの取得
-            g = nPB.CreateGraphics();
         }
 
         /// <summary>
@@ -48,10 +48,12 @@ namespace MouseGesture
             switch (stateMouse.Stroke)
             {
                 case Stroke.MOVE:
-                    
+
                     if (isRIGHTDOWN == true)
                     {
-                        g.DrawLine(Pens.Black, OldP.X, OldP.Y, State.X, State.Y);
+                        myPath.StartFigure();
+                        myPath.AddLine(OldP.X, OldP.Y, State.X, State.Y);
+                        g.DrawPath(Pens.Black, myPath);
                         OldP.X = State.X;
                         OldP.Y = State.Y;
                     }
@@ -62,19 +64,35 @@ namespace MouseGesture
                 case Stroke.LEFT_UP:
                     break;
                 case Stroke.RIGHT_DOWN:
-                    //OldPの初期化
+
                     OldP = new Point(State.X, State.Y);
+                    isRIGHTDOWN = true;
+
                     //追加フォームの表示
                     nForm.Show();
-                    //追加ピクチャボックスの表示
+                    //追加フォームにピクチャボックスを追加する
                     nForm.Controls.Add(nPB);
-                    isRIGHTDOWN = true;
+
+                    //追加ピクチャボックスのグラフィクスオブジェクトの取得
+                    g = nPB.CreateGraphics();
+
+                    //myPathクラスのインスタンス化
+                    myPath = new GraphicsPath();
+
                     break;
+
                 case Stroke.RIGHT_UP:
-                    //追加フォームを閉じる
-                    nForm.Close();
+
                     isRIGHTDOWN = false;
+
+                    myPath.Dispose();
+                    g.Dispose();
+                    nPB.Image = null;
+                    nForm.Controls.Remove(nPB);
+                    nForm.Hide();
+
                     break;
+
                 case Stroke.MIDDLE_DOWN:
                     break;
                 case Stroke.MIDDLE_UP:
@@ -96,7 +114,6 @@ namespace MouseGesture
                 default:
                     break;
             }
-
         }
     }
 }
