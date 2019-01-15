@@ -18,9 +18,10 @@ namespace MouseGesture
         Form nForm = new Form();
         PictureBox nPB = new PictureBox();
         GraphicsPath myPath;
+        Bitmap bmp = new Bitmap(Screen.PrimaryScreen.Bounds.Width,Screen.PrimaryScreen.Bounds.Height);
 
         Point OldP;
-        Graphics g;
+        Graphics g,g2;
 
         //右ボタンdownのフラグ
         bool isRIGHTDOWN = false;
@@ -33,7 +34,6 @@ namespace MouseGesture
             nForm.FormBorderStyle = FormBorderStyle.None;
             nForm.Bounds = Screen.PrimaryScreen.Bounds;
             nForm.TopMost = true;
-            nForm.Bounds = Screen.PrimaryScreen.Bounds;
 
             //追加ピクチャボックスの初期化
             nPB.Bounds = Screen.PrimaryScreen.Bounds;
@@ -75,6 +75,10 @@ namespace MouseGesture
 
                     //追加ピクチャボックスのグラフィクスオブジェクトの取得
                     g = nPB.CreateGraphics();
+                    g2 = Graphics.FromImage(bmp);
+
+                    g2.CopyFromScreen(new Point(0, 0), new Point(0, 0), bmp.Size);
+                    nPB.Image = bmp;
 
                     //myPathクラスのインスタンス化
                     myPath = new GraphicsPath();
@@ -84,7 +88,6 @@ namespace MouseGesture
                 case Stroke.RIGHT_UP:
 
                     isRIGHTDOWN = false;
-
                     myPath.Dispose();
                     g.Dispose();
                     nPB.Image = null;
