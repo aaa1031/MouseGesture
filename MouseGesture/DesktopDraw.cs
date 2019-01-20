@@ -53,7 +53,8 @@ namespace MouseGesture
                     {
                         myPath.StartFigure();
                         myPath.AddLine(OldP.X, OldP.Y, State.X, State.Y);
-                        g.DrawPath(Pens.Black, myPath);
+                        Pen GreenPen = new Pen(Color.Green, 5);
+                        g.DrawPath(GreenPen, myPath);
                         OldP.X = State.X;
                         OldP.Y = State.Y;
                     }
