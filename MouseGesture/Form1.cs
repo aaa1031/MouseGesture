@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing.Drawing2D;
 using static MouseGesture.MouseHook;
 
 namespace MouseGesture
@@ -26,6 +27,17 @@ namespace MouseGesture
             DDraw = new DesktopDraw();
             AddEvent(DDraw.Drawline);
             Start();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var path = new GraphicsPath();
+            path.StartFigure();
+            path.AddEllipse(0, 0, 20, 20);
+            path.CloseFigure();
+            this.Region = new Region(path);
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.BackColor = Color.Green;
         }
     }
 }
